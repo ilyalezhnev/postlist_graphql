@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 mongoose.connect(
-  "mongodb+srv://ilezhnev:graphqldb@cluster0.6py83.mongodb.net/postlist_mern_graphql?retryWrites=true&w=majority",
+  "mongodb+srv://login:<pass>@cluster0.6py83.mongodb.net/postlist_mern_graphql?retryWrites=true&w=majority",
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
 );
 
