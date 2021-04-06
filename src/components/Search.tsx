@@ -28,7 +28,10 @@ export const Search = () => {
 
       <br />
 
-      {data && data.posts.map((it, index) => <PostItem key={index} {...it} />)}
+      {data &&
+        data.posts.map((it: any, index: number) => (
+          <PostItem key={index} {...it} />
+        ))}
     </div>
   );
 };

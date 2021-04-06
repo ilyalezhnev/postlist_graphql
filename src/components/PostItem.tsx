@@ -5,10 +5,10 @@ import { DELETE_POST } from "../graphql/mutations";
 import { GET_POSTS } from "../graphql/queries";
 import { POSTS_PER_PAGE_COUNT } from "../common/const";
 
-export const PostItem = (props) => {
+export const PostItem = (props: any) => {
   const { id, title, description } = props;
   const history = useHistory();
-  const { num } = useParams();
+  const { num } = useParams<{ num: string }>();
 
   const [deletePost] = useMutation(DELETE_POST, {
     variables: {
@@ -19,7 +19,7 @@ export const PostItem = (props) => {
         query: GET_POSTS,
         variables: {
           limit: POSTS_PER_PAGE_COUNT,
-          offset: (num - 1) * POSTS_PER_PAGE_COUNT,
+          offset: (+num - 1) * POSTS_PER_PAGE_COUNT,
         },
       },
     ],
@@ -32,7 +32,7 @@ export const PostItem = (props) => {
         <p>{description}</p>
       </div>
       <div>
-        <div className="post_close-btn" onClick={deletePost}>
+        <div className="post_close-btn" onClick={() => deletePost()}>
           X
         </div>
         <button onClick={() => history.push(`/edit/${id}`)}>Edit</button>

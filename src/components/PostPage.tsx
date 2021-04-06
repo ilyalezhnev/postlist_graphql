@@ -7,7 +7,7 @@ import { NEW_COMMENT_SUBSCRIPTION } from "../graphql/subscriptions";
 
 export const PostPage = () => {
   const [comment, setComment] = useState("");
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
   const { data, subscribeToMore } = useQuery(GET_POST, {
@@ -64,7 +64,9 @@ export const PostPage = () => {
         <h4>Comments:</h4>
         {data.post.comments &&
           !!data.post.comments.length &&
-          data.post.comments.map((it, i) => <div key={i}>{it}</div>)}
+          data.post.comments.map((it: any, i: number) => (
+            <div key={i}>{it}</div>
+          ))}
       </div>
     </div>
   ) : null;

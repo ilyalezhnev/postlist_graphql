@@ -11,7 +11,7 @@ export const EditPost = () => {
   });
 
   const history = useHistory();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   useQuery(GET_POST, {
     variables: {
@@ -37,7 +37,7 @@ export const EditPost = () => {
     onCompleted: () => history.push("/"),
   });
 
-  const onInputChange = (e) => {
+  const onInputChange = (e: any) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 

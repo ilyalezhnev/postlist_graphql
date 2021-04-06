@@ -18,7 +18,7 @@ export const CreatePost = () => {
       description: formState.description,
     },
     update(cache, { data: { addPost } }) {
-      const existingData = cache.readQuery({
+      const existingData: any = cache.readQuery({
         query: GET_POSTS,
         variables: {
           limit: 5,
@@ -43,7 +43,7 @@ export const CreatePost = () => {
     },
   });
 
-  const onInputChange = (e) => {
+  const onInputChange = (e: any) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
