@@ -24,6 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "prestart": "yarn generate-types",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "generate-types": "graphql-codegen --config codegen.yml",
