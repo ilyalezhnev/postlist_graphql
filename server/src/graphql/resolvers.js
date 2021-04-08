@@ -1,4 +1,9 @@
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { AuthenticationError } = require("apollo-server-express");
 const { PostModel } = require("../models/post");
+const { UserModel } = require("../models/user");
+require("dotenv").config();
 
 const postResolvers = {
   Query: {
@@ -72,12 +77,49 @@ const postResolvers = {
       );
 
       if (comment) {
+        // workaround for avoid duplicates on comments array
         post.comments.push(comment);
         await post.save();
         context.pubsub.publish("NEW_COMMENT", comment);
       }
 
       return post;
+    },
+    signup: async (parent, args, context, info) => {
+      const trimmedEmail = args.email.trim().toLowerCase();
+      const hashedPassword = await bcrypt.hash(args.password, 10);
+
+      const user = await UserModel.create({
+        email: trimmedEmail,
+        password: hashedPassword,
+      });
+
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+
+      return {
+        user,
+        token,
+      };
+    },
+    login: async (parent, args, context, info) => {
+      const user = await UserModel.findOne({ email: args.email });
+
+      if (!user) {
+        throw new AuthenticationError("Error signing in");
+      }
+
+      const valid = await bcrypt.compare(args.password, user.password);
+
+      if (!valid) {
+        throw new AuthenticationError("Error signing in");
+      }
+
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+
+      return {
+        user,
+        token,
+      };
     },
   },
 };

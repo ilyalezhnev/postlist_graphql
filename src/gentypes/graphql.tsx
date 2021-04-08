@@ -19,6 +19,8 @@ export type Mutation = {
   addPost?: Maybe<Post>;
   deletePost?: Maybe<Scalars['Boolean']>;
   updatePost?: Maybe<Post>;
+  signup: User;
+  login: User;
 };
 
 
@@ -40,11 +42,24 @@ export type MutationUpdatePostArgs = {
   comment?: Maybe<Scalars['String']>;
 };
 
+
+export type MutationSignupArgs = {
+  email?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationLoginArgs = {
+  email?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+};
+
 export type Post = {
   __typename?: 'Post';
   id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
+  author?: Maybe<User>;
   comments?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
@@ -82,6 +97,13 @@ export type SortRules = {
 export type Subscription = {
   __typename?: 'Subscription';
   newComment?: Maybe<Scalars['String']>;
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['ID'];
+  email?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
 };
 
 export type AddPostMutationVariables = Exact<{
