@@ -58,23 +58,26 @@ const postResolvers = {
     updatePost: async (parent, args, context, info) => {
       const { id, title, description, comment } = args;
 
-      return await PostModel.findByIdAndUpdate(
+      const post = await PostModel.findByIdAndUpdate(
         { _id: id },
         {
           title,
           description,
-          $push: { comments: comment },
         },
         (err, data) => {
           if (!err) {
-            if (comment) {
-              context.pubsub.publish("NEW_COMMENT", comment);
-            }
-
             console.log("Post updated");
           }
         }
       );
+
+      if (comment) {
+        post.comments.push(comment);
+        await post.save();
+        context.pubsub.publish("NEW_COMMENT", comment);
+      }
+
+      return post;
     },
   },
 };
