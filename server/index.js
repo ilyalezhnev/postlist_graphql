@@ -29,6 +29,8 @@ const apolloServer = new ApolloServer({
     const token = req.headers.authorization;
     const user = getCurrentUser(token);
 
+    console.log("user", user);
+
     return {
       ...req,
       pubsub,

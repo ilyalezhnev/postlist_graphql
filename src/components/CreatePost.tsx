@@ -49,7 +49,7 @@ export const CreatePost = () => {
 
   return (
     <div className="page-layout">
-      <h2>Create new post</h2>
+      <h2>Create post</h2>
       <form
         onSubmit={(e) => {
           e.preventDefault();

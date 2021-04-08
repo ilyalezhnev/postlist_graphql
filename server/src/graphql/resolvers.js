@@ -105,13 +105,13 @@ const postResolvers = {
       const user = await UserModel.findOne({ email: args.email });
 
       if (!user) {
-        throw new AuthenticationError("Error signing in");
+        throw new AuthenticationError("User not found");
       }
 
       const valid = await bcrypt.compare(args.password, user.password);
 
       if (!valid) {
-        throw new AuthenticationError("Error signing in");
+        throw new AuthenticationError("Password is not correct");
       }
 
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);

@@ -45,3 +45,7 @@ code {
   margin-right: 10px;
   cursor: pointer;
 }
+
+.pointer {
+  cursor: pointer;
+}

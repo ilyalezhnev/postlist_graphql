@@ -34,3 +34,25 @@ export const UPDATE_POST = gql`
     }
   }
 `;
+
+export const SIGNUP = gql`
+  mutation Singup($email: String!, $password: String!) {
+    signup(email: $email, password: $password) {
+      user {
+        id
+      }
+      token
+    }
+  }
+`;
+
+export const LOGIN = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      user {
+        id
+      }
+      token
+    }
+  }
+`;
