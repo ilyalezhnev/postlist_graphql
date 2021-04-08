@@ -14,13 +14,19 @@ export type Scalars = {
   Float: number;
 };
 
+export type AuthPayload = {
+  __typename?: 'AuthPayload';
+  token?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPost?: Maybe<Post>;
   deletePost?: Maybe<Scalars['Boolean']>;
   updatePost?: Maybe<Post>;
-  signup: User;
-  login: User;
+  signup?: Maybe<AuthPayload>;
+  login?: Maybe<AuthPayload>;
 };
 
 
