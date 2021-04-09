@@ -24,7 +24,7 @@ export const PostPage = () => {
   const addComment = () => {
     console.log("add coment");
     if (comment) {
-      updatePost({ variables: { ...data.post, comment } });
+      updatePost({ variables: { ...data?.post, comment } });
     }
     setComment("");
   };

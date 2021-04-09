@@ -4,26 +4,30 @@ import { useHistory, useParams } from "react-router";
 import { DELETE_POST } from "../graphql/mutations";
 import { GET_POSTS } from "../graphql/queries";
 import { POSTS_PER_PAGE_COUNT } from "../common/const";
+import { DeletePostMutation, MutationDeletePostArgs } from "gentypes/graphql";
 
 export const PostItem = (props: any) => {
   const { id, title, description } = props;
   const history = useHistory();
   const { num } = useParams<{ num: string }>();
 
-  const [deletePost] = useMutation(DELETE_POST, {
-    variables: {
-      id: id,
-    },
-    refetchQueries: [
-      {
-        query: GET_POSTS,
-        variables: {
-          limit: POSTS_PER_PAGE_COUNT,
-          offset: (+num - 1) * POSTS_PER_PAGE_COUNT,
-        },
+  const [deletePost] = useMutation<DeletePostMutation, MutationDeletePostArgs>(
+    DELETE_POST,
+    {
+      variables: {
+        id: id,
       },
-    ],
-  });
+      refetchQueries: [
+        {
+          query: GET_POSTS,
+          variables: {
+            limit: POSTS_PER_PAGE_COUNT,
+            offset: (+num - 1) * POSTS_PER_PAGE_COUNT,
+          },
+        },
+      ],
+    }
+  );
 
   return (
     <div className="post_layout">

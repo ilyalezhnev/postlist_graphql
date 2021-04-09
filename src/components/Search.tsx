@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { GET_POSTS } from "../graphql/queries";
 import { PostItem } from "./PostItem";
+import { GetPostsQuery, QueryPostsArgs } from "gentypes/graphql";
 
 export const Search = () => {
   const [searchFilter, setSearchFilter] = useState("");
-  const [executeSearch, { data }] = useLazyQuery(GET_POSTS);
+  const [executeSearch, { data }] = useLazyQuery<GetPostsQuery, QueryPostsArgs>(
+    GET_POSTS
+  );
 
   return (
     <div className="page-layout">

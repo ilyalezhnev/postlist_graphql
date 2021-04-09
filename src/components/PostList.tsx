@@ -4,11 +4,12 @@ import { useHistory, useParams } from "react-router";
 import { GET_POSTS } from "../graphql/queries";
 import { PostItem } from "./PostItem";
 import { POSTS_PER_PAGE_COUNT } from "../common/const";
+import { GetPostsQuery, QueryPostsArgs } from "gentypes/graphql";
 
 export const PostList = () => {
   const history = useHistory();
   const { num } = useParams<{ num: string }>();
-  const { data } = useQuery(GET_POSTS, {
+  const { data } = useQuery<GetPostsQuery, QueryPostsArgs>(GET_POSTS, {
     variables: {
       limit: POSTS_PER_PAGE_COUNT,
       offset: (+num - 1) * POSTS_PER_PAGE_COUNT,
@@ -39,7 +40,8 @@ export const PostList = () => {
       <span
         className="page-count_control"
         onClick={() => {
-          if (+num * POSTS_PER_PAGE_COUNT < data.postsCount) {
+          const count = data?.postsCount || 0;
+          if (+num * POSTS_PER_PAGE_COUNT < count) {
             history.push(`/page/${+num + 1}`);
           }
         }}

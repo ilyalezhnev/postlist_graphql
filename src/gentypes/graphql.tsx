@@ -16,17 +16,17 @@ export type Scalars = {
 
 export type AuthPayload = {
   __typename?: 'AuthPayload';
-  token?: Maybe<Scalars['String']>;
-  user?: Maybe<User>;
+  token: Scalars['String'];
+  user: User;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addPost?: Maybe<Post>;
-  deletePost?: Maybe<Scalars['Boolean']>;
-  updatePost?: Maybe<Post>;
-  signup?: Maybe<AuthPayload>;
-  login?: Maybe<AuthPayload>;
+  addPost: Post;
+  deletePost: Scalars['Boolean'];
+  updatePost: Post;
+  signup: AuthPayload;
+  login: AuthPayload;
 };
 
 
@@ -72,9 +72,9 @@ export type Post = {
 export type Query = {
   __typename?: 'Query';
   info: Scalars['String'];
-  post?: Maybe<Post>;
-  posts?: Maybe<Array<Maybe<Post>>>;
-  postsCount?: Maybe<Scalars['Int']>;
+  post: Post;
+  posts: Array<Maybe<Post>>;
+  postsCount: Scalars['Int'];
 };
 
 
@@ -102,14 +102,14 @@ export type SortRules = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  newComment?: Maybe<Scalars['String']>;
+  newComment: Scalars['String'];
 };
 
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
-  email?: Maybe<Scalars['String']>;
-  password?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type AddPostMutationVariables = Exact<{
@@ -120,10 +120,10 @@ export type AddPostMutationVariables = Exact<{
 
 export type AddPostMutation = (
   { __typename?: 'Mutation' }
-  & { addPost?: Maybe<(
+  & { addPost: (
     { __typename?: 'Post' }
     & Pick<Post, 'id'>
-  )> }
+  ) }
 );
 
 export type DeletePostMutationVariables = Exact<{
@@ -146,10 +146,46 @@ export type UpdatePostMutationVariables = Exact<{
 
 export type UpdatePostMutation = (
   { __typename?: 'Mutation' }
-  & { updatePost?: Maybe<(
+  & { updatePost: (
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'title' | 'description' | 'comments'>
-  )> }
+  ) }
+);
+
+export type SingupMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type SingupMutation = (
+  { __typename?: 'Mutation' }
+  & { signup: (
+    { __typename?: 'AuthPayload' }
+    & Pick<AuthPayload, 'token'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
+  ) }
+);
+
+export type LoginMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = (
+  { __typename?: 'Mutation' }
+  & { login: (
+    { __typename?: 'AuthPayload' }
+    & Pick<AuthPayload, 'token'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
+  ) }
 );
 
 export type GetPostsQueryVariables = Exact<{
@@ -163,10 +199,10 @@ export type GetPostsQueryVariables = Exact<{
 export type GetPostsQuery = (
   { __typename?: 'Query' }
   & Pick<Query, 'postsCount'>
-  & { posts?: Maybe<Array<Maybe<(
+  & { posts: Array<Maybe<(
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'title' | 'description'>
-  )>>> }
+  )>> }
 );
 
 export type GetPostQueryVariables = Exact<{
@@ -176,10 +212,10 @@ export type GetPostQueryVariables = Exact<{
 
 export type GetPostQuery = (
   { __typename?: 'Query' }
-  & { post?: Maybe<(
+  & { post: (
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'title' | 'description' | 'comments'>
-  )> }
+  ) }
 );
 
 export type GetNewCommentSubscriptionVariables = Exact<{ [key: string]: never; }>;
@@ -295,6 +331,80 @@ export function useUpdatePostMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
 export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>;
 export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
+export const SingupDocument = gql`
+    mutation Singup($email: String!, $password: String!) {
+  signup(email: $email, password: $password) {
+    user {
+      id
+    }
+    token
+  }
+}
+    `;
+export type SingupMutationFn = Apollo.MutationFunction<SingupMutation, SingupMutationVariables>;
+
+/**
+ * __useSingupMutation__
+ *
+ * To run a mutation, you first call `useSingupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSingupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [singupMutation, { data, loading, error }] = useSingupMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useSingupMutation(baseOptions?: Apollo.MutationHookOptions<SingupMutation, SingupMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SingupMutation, SingupMutationVariables>(SingupDocument, options);
+      }
+export type SingupMutationHookResult = ReturnType<typeof useSingupMutation>;
+export type SingupMutationResult = Apollo.MutationResult<SingupMutation>;
+export type SingupMutationOptions = Apollo.BaseMutationOptions<SingupMutation, SingupMutationVariables>;
+export const LoginDocument = gql`
+    mutation Login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    user {
+      id
+    }
+    token
+  }
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const GetPostsDocument = gql`
     query GetPosts($limit: Int, $offset: Int, $orderBy: SortRules, $filter: String) {
   posts(limit: $limit, offset: $offset, orderBy: $orderBy, filter: $filter) {

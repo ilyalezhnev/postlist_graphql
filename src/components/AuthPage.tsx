@@ -3,6 +3,12 @@ import { useMutation } from "@apollo/client";
 import { SIGNUP, LOGIN } from "../graphql/mutations";
 import { AUTH_TOKEN_KEY } from "../common/const";
 import { useHistory } from "react-router";
+import {
+  LoginMutation,
+  MutationLoginArgs,
+  MutationSignupArgs,
+  SingupMutation,
+} from "gentypes/graphql";
 
 export const AuthPage = () => {
   const history = useHistory();
@@ -12,7 +18,7 @@ export const AuthPage = () => {
     password: "",
   });
 
-  const [signup] = useMutation(SIGNUP, {
+  const [signup] = useMutation<SingupMutation, MutationSignupArgs>(SIGNUP, {
     variables: {
       email: formFields.email,
       password: formFields.password,
@@ -27,20 +33,25 @@ export const AuthPage = () => {
     },
   });
 
-  const [login] = useMutation(LOGIN, {
-    variables: {
-      email: formFields.email,
-      password: formFields.password,
-    },
-    onCompleted: ({ login }) => {
-      localStorage.setItem(AUTH_TOKEN_KEY, login.token);
-      history.push("/");
-      console.log("login", login);
-    },
-    onError: (error) => {
-      console.log("signup err", error);
-    },
-  });
+  const [login, { error }] = useMutation<LoginMutation, MutationLoginArgs>(
+    LOGIN,
+    {
+      variables: {
+        email: formFields.email,
+        password: formFields.password,
+      },
+      onCompleted: ({ login }) => {
+        localStorage.setItem(AUTH_TOKEN_KEY, login.token);
+        history.push("/");
+        console.log("login", login);
+      },
+      onError: (error) => {
+        console.log("signup err", error);
+      },
+    }
+  );
+
+  console.log("error", error);
 
   return (
     <div className="page-layout">
@@ -91,6 +102,8 @@ export const AuthPage = () => {
           {formFields.newUser ? "Signup" : "Login"}
         </span>
       </form>
+      <br />
+      {error && <div>{error.message}</div>}
     </div>
   );
 };

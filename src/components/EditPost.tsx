@@ -3,6 +3,12 @@ import { useQuery, useMutation } from "@apollo/client";
 import { useHistory, useParams } from "react-router";
 import { UPDATE_POST } from "../graphql/mutations";
 import { GET_POSTS, GET_POST } from "../graphql/queries";
+import {
+  GetPostQuery,
+  MutationUpdatePostArgs,
+  QueryPostArgs,
+  UpdatePostMutation,
+} from "gentypes/graphql";
 
 export const EditPost = () => {
   const [formState, setFormState] = useState({
@@ -13,29 +19,37 @@ export const EditPost = () => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
 
-  useQuery(GET_POST, {
+  useQuery<GetPostQuery, QueryPostArgs>(GET_POST, {
     variables: {
       id,
     },
     onCompleted: (data) => {
       const { post } = data;
       const { title, description } = post;
-      setFormState({ ...formState, title, description });
+
+      setFormState({
+        ...formState,
+        title: title || "",
+        description: description || "",
+      });
     },
     onError: () => {
       history.push("/");
     },
   });
 
-  const [updatePost] = useMutation(UPDATE_POST, {
-    variables: {
-      id,
-      title: formState.title,
-      description: formState.description,
-    },
-    refetchQueries: [{ query: GET_POSTS }],
-    onCompleted: () => history.push("/"),
-  });
+  const [updatePost] = useMutation<UpdatePostMutation, MutationUpdatePostArgs>(
+    UPDATE_POST,
+    {
+      variables: {
+        id,
+        title: formState.title,
+        description: formState.description,
+      },
+      refetchQueries: [{ query: GET_POSTS }],
+      onCompleted: () => history.push("/"),
+    }
+  );
 
   const onInputChange = (e: any) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
