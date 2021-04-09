@@ -42,9 +42,14 @@ const postResolvers = {
   },
   Mutation: {
     addPost: (parent, args, context, info) => {
+      const { userId } = context;
+
+      console.log("userId");
+
       const newPost = new PostModel({
         title: args.title,
         description: args.description,
+        author: userId,
       });
 
       newPost.save((err, newPost) => {

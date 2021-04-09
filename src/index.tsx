@@ -33,6 +33,11 @@ const wsLink = new WebSocketLink({
   uri: `ws://localhost:4000/graphql`,
   options: {
     reconnect: true,
+    connectionParams: {
+      headers: {
+        authorization: localStorage.getItem(AUTH_TOKEN_KEY) || "",
+      },
+    },
   },
 });
 
@@ -53,10 +58,10 @@ const client = new ApolloClient({
 });
 
 ReactDOM.render(
-  <BrowserRouter>
-    <ApolloProvider client={client}>
+  <ApolloProvider client={client}>
+    <BrowserRouter>
       <App />
-    </ApolloProvider>
-  </BrowserRouter>,
+    </BrowserRouter>
+  </ApolloProvider>,
   document.getElementById("root")
 );

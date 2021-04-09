@@ -3,7 +3,7 @@ const { postResolvers } = require("./src/graphql/resolvers");
 const Subscription = require("./src/graphql/subscribers");
 const { typeDefs } = require("./src/graphql/typeDefs");
 const mongoose = require("mongoose");
-const { getCurrentUser } = require("./src/utils/utils");
+const { getCurrentUserId } = require("./src/utils/utils");
 require("dotenv").config();
 
 mongoose.connect(
@@ -27,14 +27,12 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: ({ req }) => {
     const token = req.headers.authorization;
-    const user = getCurrentUser(token);
-
-    console.log("user", user);
+    const userId = getCurrentUserId(token);
 
     return {
       ...req,
       pubsub,
-      user,
+      userId,
     };
   },
 });

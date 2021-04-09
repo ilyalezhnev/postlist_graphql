@@ -1,16 +1,19 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const getCurrentUser = (token) => {
+const getCurrentUserId = (token) => {
   if (token) {
     try {
-      return jwt.verify(token, process.env.JWT_SECRET);
+      const { userId } = jwt.verify(token, process.env.JWT_SECRET);
+      return userId;
     } catch (err) {
       throw new Error("Session invalid");
     }
   }
+
+  return null;
 };
 
 module.exports = {
-  getCurrentUser,
+  getCurrentUserId,
 };

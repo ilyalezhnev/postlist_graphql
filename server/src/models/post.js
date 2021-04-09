@@ -6,6 +6,7 @@ const postSchema = new Schema(
     title: { type: String },
     description: { type: String },
     comments: [String],
+    author: String,
   },
   { timestamps: { createdAt: true, updatedAt: true } }
 );

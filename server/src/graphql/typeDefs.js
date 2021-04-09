@@ -10,7 +10,7 @@ const typeDefs = gql`
 
   type Mutation {
     addPost(title: String, description: String): Post!
-    deletePost(id: ID!): Boolean!
+    deletePost(id: ID!): Boolean
     updatePost(
       id: ID!
       title: String
