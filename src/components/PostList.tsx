@@ -5,8 +5,13 @@ import { GET_POSTS } from "../graphql/queries";
 import { PostItem } from "./PostItem";
 import { POSTS_PER_PAGE_COUNT } from "../common/const";
 import { GetPostsQuery, QueryPostsArgs } from "gentypes/graphql";
+import { useApolloClient } from "@apollo/client";
 
 export const PostList = () => {
+  const client = useApolloClient();
+
+  console.log("client.cache", client.readQuery({ query: GET_POSTS }));
+
   const history = useHistory();
   const { num } = useParams<{ num: string }>();
   const { data } = useQuery<GetPostsQuery, QueryPostsArgs>(GET_POSTS, {

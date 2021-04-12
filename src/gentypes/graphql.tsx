@@ -23,7 +23,7 @@ export type AuthPayload = {
 export type Mutation = {
   __typename?: 'Mutation';
   addPost: Post;
-  deletePost: Scalars['Boolean'];
+  deletePost?: Maybe<Scalars['Boolean']>;
   updatePost: Post;
   signup: AuthPayload;
   login: AuthPayload;

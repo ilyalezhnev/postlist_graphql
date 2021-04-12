@@ -2,7 +2,6 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import {
   ApolloClient,
-  InMemoryCache,
   ApolloProvider,
   createHttpLink,
   split,
@@ -14,6 +13,7 @@ import "./index.css";
 import { OperationDefinitionNode } from "graphql/language/ast";
 import { App } from "./components/App";
 import { AUTH_TOKEN_KEY } from "./common/const";
+import { cache } from "./graphql/cache";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:4000",
@@ -54,7 +54,7 @@ const link = split(
 
 const client = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  cache,
 });
 
 ReactDOM.render(
